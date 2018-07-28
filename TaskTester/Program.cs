@@ -50,6 +50,21 @@ namespace TaskTester
             }
             return results;
         }
+        static double[,] calculateMaxResults(List<Task> all_tasks, contextCompare comp)
+        {
+            double[,] results = new double[all_tasks.Count(), all_tasks.Count()];
+            for (int i = 0; i < all_tasks.Count(); i++)
+            {
+                results[i, i] = 0.0;
+                for (int j = i + 1; j < all_tasks.Count(); j++)
+                {
+                    double sim =1.0 - all_tasks[i].getCost(all_tasks[j], comp);
+                    results[i, j] = sim;
+                    results[j, i] = sim;
+                }
+            }
+            return results;
+        }
         static double[,] calculateComponents(int [] task_ids)
         {
             double[,] results = new double[task_ids.Length, task_ids.Length];
@@ -84,13 +99,13 @@ namespace TaskTester
                 all_tasks.Add(t);
             }
             //behavior general
-            double[,] results = calculateResults(all_tasks, db.taskCost);
+            double[,] results = calculateMaxResults(all_tasks, db.taskCost);
             writeConfusionMatrix(results, task_names.ToArray(), "behavior_general.csv");
             //behavior exact
-            results = calculateResults(all_tasks , db.taskExactCost);
+            results = calculateMaxResults(all_tasks , db.taskExactCost);
             writeConfusionMatrix(results, task_names.ToArray(), "behavior_exact.csv");
             //behavior leven
-            results = calculateResults(all_tasks , db.taskLevenCost);
+            results = calculateMaxResults(all_tasks , db.taskLevenCost);
             writeConfusionMatrix(results, task_names.ToArray(), "behavior_leven.csv");
             //components only exact
             results = calculateComponents(acts);
