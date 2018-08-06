@@ -55,10 +55,10 @@ namespace TaskTester
             double[,] results = new double[all_tasks.Count(), all_tasks.Count()];
             for (int i = 0; i < all_tasks.Count(); i++)
             {
-                results[i, i] = 0.0;
+                results[i, i] = 1.0;
                 for (int j = i + 1; j < all_tasks.Count(); j++)
                 {
-                    double sim =1.0 - all_tasks[i].getCost(all_tasks[j], comp);
+                    double sim = 1.0 - all_tasks[i].getCostMaxLength(all_tasks[j], comp);
                     results[i, j] = sim;
                     results[j, i] = sim;
                 }

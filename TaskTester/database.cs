@@ -364,10 +364,10 @@ namespace TaskTester
         }
         public double taskCost(int act1, int act2, bool con1, bool con2)
         {
-            double result = 1.0/this.wuPalmerSim(act1, act2, true);
+            double result = this.wuPalmerSim(act1, act2, true);
             List<Role> role1 = this.getAllRoles(act1);
             List<Role> role2 = this.getAllRoles(act2);
-            result += this.getRoleSimularity(role1, role2);
+            result += (this.getRoleSimularity(role1, role2)/Math.Max(role1.Count,role2.Count));
 
             return result / 2.0; //For now, average the two together
         }
